@@ -1,0 +1,71 @@
+CREATE TABLE `Users` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `Roles` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `User_Roles` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`user_id` int NOT NULL,
+	`role_id` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `Manufactures` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`name` varchar(255) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `Vehicles` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`name` varchar(255) NOT NULL,
+	`manufacture_id` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `User_Vehicle` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`Model` varchar(255) NOT NULL,
+	`registration_year` varchar(255) NOT NULL,
+	`vehicle_id` int NOT NULL,
+	`user_id` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `Routes` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`name` varchar(255) NOT NULL,
+	`departure_time` DATETIME NOT NULL,
+	`arrival_time` DATETIME NOT NULL,
+	`user_id` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `Locations` (
+	`start_lat` bigint NOT NULL,
+	`start_long` bigint NOT NULL,
+	`end_lat` bigint NOT NULL,
+	`end_long` bigint NOT NULL,
+	`id` int NOT NULL AUTO_INCREMENT,
+	`route_id` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+ALTER TABLE `User_Roles` ADD CONSTRAINT `User_Roles_fk0` FOREIGN KEY (`user_id`) REFERENCES `Users`(`id`);
+
+ALTER TABLE `User_Roles` ADD CONSTRAINT `User_Roles_fk1` FOREIGN KEY (`role_id`) REFERENCES `Roles`(`id`);
+
+ALTER TABLE `Vehicles` ADD CONSTRAINT `Vehicles_fk0` FOREIGN KEY (`manufacture_id`) REFERENCES `Manufactures`(`id`);
+
+ALTER TABLE `User_Vehicle` ADD CONSTRAINT `User_Vehicle_fk0` FOREIGN KEY (`vehicle_id`) REFERENCES `Vehicles`(`id`);
+
+ALTER TABLE `User_Vehicle` ADD CONSTRAINT `User_Vehicle_fk1` FOREIGN KEY (`user_id`) REFERENCES `Users`(`id`);
+
+ALTER TABLE `Routes` ADD CONSTRAINT `Routes_fk0` FOREIGN KEY (`user_id`) REFERENCES `Users`(`id`);
+
+ALTER TABLE `Locations` ADD CONSTRAINT `Locations_fk0` FOREIGN KEY (`route_id`) REFERENCES `Routes`(`id`);
